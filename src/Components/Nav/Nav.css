@@ -1,0 +1,28 @@
+nav .navbar-nav a{
+    color: var(--darkpink-color);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+nav .navbar-nav a:hover ,
+nav .navbar-nav a:focus{
+    color: var(--darkyellow-color);
+}
+
+@keyframes slideInFromRight {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  .nav-link {
+    animation: slideInFromRight 0.8s ease-out forwards;
+  }
+  
