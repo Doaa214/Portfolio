@@ -39,9 +39,11 @@ function FooterSection() {
         {/* Bottom Section: Language, Copyright, Social Media */}
         <hr className="my-4" /> {/* Horizontal line separator */}
 
-        <Row className="align-items-center">
-          
-
+        <Row className="justify-content-center align-items-center"> 
+          <Col md={4} className="text-center mb-3 mb-md-0 text-muted">
+            © {currentYear} Portfolio Do. <br />
+            Designed by Doaa Sobhy
+          </Col>
         </Row>
       </Container>
     </footer>
