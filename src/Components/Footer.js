@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is import
 
 // You'll likely need icons for the social media links and the email input.
 // Let's use React Icons (Font Awesome) as an example, as it's a good practice.
-import { FaEnvelope, FaWhatsapp } from 'react-icons/fa';
+import { FaEnvelope} from 'react-icons/fa';
 
 function FooterSection() {
   const currentYear = new Date().getFullYear(); // Dynamically get the current year
