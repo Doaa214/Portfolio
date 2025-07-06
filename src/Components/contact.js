@@ -30,7 +30,7 @@ function ContactSection() {
       method: 'POST',
       body: formDataToSend,
       headers: {
-        'Accept': 'application/json',  // هذا مهم جداً
+        'Accept': 'application/json',  
       },
     });
 
