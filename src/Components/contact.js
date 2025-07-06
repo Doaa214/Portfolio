@@ -1,37 +1,49 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'; // تأكد من استيراد Bootstrap CSS
-
+import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaEnvelope, FaWhatsapp } from 'react-icons/fa';
 
 function ContactSection() {
-  // استخدام useState لإدارة حالة النموذج (اختياري، ولكنها ممارسة جيدة)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
   });
 
+  const [success, setSuccess] = useState(false); // for showing success message
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // هنا يمكنك إضافة منطق لإرسال النموذج، مثل:
-    // - إرسال البيانات إلى API (باستخدام fetch أو axios)
-    // - إظهار رسالة نجاح/خطأ للمستخدم
-    console.log('Form data submitted:', formData);
-    alert('Message sent successfully! (Check console for data)');
-    // يمكنك مسح النموذج بعد الإرسال
-    setFormData({ name: '', email: '', message: '' });
+
+    try {
+      const response = await fetch('https://formspree.io/f/xwpbjwwl', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSuccess(true);
+        setFormData({ name: '', email: '', message: '' });
+
+        setTimeout(() => setSuccess(false), 4000); // Hide success message after 4 seconds
+      } else {
+        alert('Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('An error occurred. Please try again later.');
+    }
   };
 
   return (
-    <section id="contact" className="py-5 bg-light"> {/* أضف ID للملاحة، bg-light لخلفية خفيفة */}
+    <section id="contact" className="py-5 bg-light">
       <Container>
-        {/* العنوان الرئيسي والوصف */}
         <Row className="justify-content-center text-center mb-5">
           <Col md={8} lg={6}>
             <h2 className="display-4 fw-bold mb-3">Get In Touch</h2>
@@ -42,14 +54,22 @@ function ContactSection() {
           </Col>
         </Row>
 
-        {/* أقسام النموذج ومعلومات الاتصال */}
-        <Row className="justify-content-center g-4"> {/* g-4 لإضافة مسافة بين الأعمدة/البطاقات */}
-          {/* قسم "Send Me a Message" (النموذج) */}
-          <Col lg={6} md={10}> {/* يأخذ 6 أعمدة على الشاشات الكبيرة، 10 على المتوسطة */}
-            <Card className="shadow-sm h-100"> {/* h-100 لضمان نفس الارتفاع */}
+        <Row className="justify-content-center g-4">
+          {/* Form Column */}
+          <Col lg={6} md={10}>
+            <Card className="shadow-sm h-100">
               <Card.Body className="p-4">
                 <Card.Title className="h4 mb-4">Send Me a Message</Card.Title>
-                <p className="text-muted mb-4">Fill out the form below and I'll get back to you as soon as possible.</p>
+                <p className="text-muted mb-4">
+                  Fill out the form below and I'll get back to you as soon as possible.
+                </p>
+
+                {/* Success Alert */}
+                {success && (
+                  <Alert variant="success">
+                    Message sent successfully!
+                  </Alert>
+                )}
 
                 <Form onSubmit={handleSubmit}>
                   <Form.Group className="mb-3" controlId="formName">
@@ -79,8 +99,8 @@ function ContactSection() {
                   <Form.Group className="mb-4" controlId="formMessage">
                     <Form.Label>Your Message</Form.Label>
                     <Form.Control
-                      as="textarea" // يجعلها منطقة نص متعددة الأسطر
-                      rows={5} // عدد الصفوف الافتراضي
+                      as="textarea"
+                      rows={5}
                       placeholder="Type your message here..."
                       name="message"
                       value={formData.message}
@@ -89,7 +109,7 @@ function ContactSection() {
                     />
                   </Form.Group>
 
-                  <Button variant="primary" type="submit" className="w-100"> {/* w-100 لجعل الزر بكامل العرض */}
+                  <Button variant="primary" type="submit" className="w-100">
                     Send Message
                   </Button>
                 </Form>
@@ -97,8 +117,8 @@ function ContactSection() {
             </Card>
           </Col>
 
-          {/* قسم "Let's Connect" (معلومات الاتصال) */}
-          <Col lg={4} md={10}> {/* يأخذ 4 أعمدة على الشاشات الكبيرة، 10 على المتوسطة */}
+          {/* Contact Info Column */}
+          <Col lg={4} md={10}>
             <Card className="shadow-sm h-100">
               <Card.Body className="p-4">
                 <Card.Title className="h4 mb-4">Let's Connect</Card.Title>
@@ -108,16 +128,21 @@ function ContactSection() {
                   from you.
                 </p>
 
-                <ul className="list-unstyled"> {/* لإزالة نقاط القائمة */}
+                <ul className="list-unstyled">
                   <li className="mb-3 d-flex align-items-center">
-                    <FaEnvelope size={20} className="me-3 text-primary" /> {/* أيقونة البريد */}
+                    <FaEnvelope size={20} className="me-3 text-primary" />
                     <a href="mailto:harrasdoaa@gmail.com" className="text-decoration-none text-dark">
                       harrasdoaa@gmail.com
                     </a>
                   </li>
                   <li className="mb-3 d-flex align-items-center">
-                    <FaWhatsapp size={20} color="green"  className="me-3 text-primary" /> {/* أيقونة LinkedIn */}
-                    <a href="https://wa.me/201050688345" target="_blank" rel="noopener noreferrer" className="text-decoration-none text-dark">
+                    <FaWhatsapp size={20} color="green" className="me-3 text-primary" />
+                    <a
+                      href="https://wa.me/201050688345"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-decoration-none text-dark"
+                    >
                       WhatsApp
                     </a>
                   </li>
@@ -134,3 +159,4 @@ function ContactSection() {
 }
 
 export default ContactSection;
+
