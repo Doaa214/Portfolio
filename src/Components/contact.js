@@ -17,29 +17,36 @@ function ContactSection() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const response = await fetch('https://formspree.io/f/xwpbjwwl', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+  const formDataToSend = new FormData();
+  formDataToSend.append('name', formData.name);
+  formDataToSend.append('email', formData.email);
+  formDataToSend.append('message', formData.message);
 
-      if (response.ok) {
-        setSuccess(true);
-        setFormData({ name: '', email: '', message: '' });
+  try {
+    const response = await fetch('https://formspree.io/f/xwpbjwwl', {
+      method: 'POST',
+      body: formDataToSend,
+      headers: {
+        'Accept': 'application/json',  // هذا مهم جداً
+      },
+    });
 
-        setTimeout(() => setSuccess(false), 4000); // Hide success message after 4 seconds
-      } else {
-        alert('Failed to send message. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-      alert('An error occurred. Please try again later.');
+    if (response.ok) {
+      setSuccess(true);
+      setFormData({ name: '', email: '', message: '' });
+      setTimeout(() => setSuccess(false), 4000);
+    } else {
+      alert('Failed to send message. Please try again.');
     }
-  };
+  } catch (error) {
+    console.error('Error sending message:', error);
+    alert('An error occurred. Please try again later.');
+  }
+};
+
 
   return (
     <section id="contact" className="py-5 bg-light">
